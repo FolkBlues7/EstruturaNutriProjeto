@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import com.nutricao.estruturaDeDadosNutri.entities.User;
 import com.nutricao.estruturaDeDadosNutri.repositories.UserRepository;
 //essa classe serve para testar e fazer a inserção no BD do h2
+
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner {

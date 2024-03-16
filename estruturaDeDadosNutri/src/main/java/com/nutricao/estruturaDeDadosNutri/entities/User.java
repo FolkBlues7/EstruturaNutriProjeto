@@ -24,11 +24,14 @@ public class User implements Serializable {
 	private float height;
 	private float bodyWeight;
 	private float imc;
+
+	public User() {
+
+	}
 	//private diet = nova dieta e tals;
 	
-	
-	
-	//Fazer o tratamento de excessões nos getter e setter, pois apenas gera-los não garante encapsulamento
+
+	//Fazer o tratamento de exceções nos getter e setter, pois apenas gera-los não garante encapsulamento
 	public String getName() {
 		return name;
 	}
@@ -88,6 +91,7 @@ public class User implements Serializable {
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -99,8 +103,6 @@ public class User implements Serializable {
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 	
 	//método de dar update no IMC, quando tiver o BD
 	//public updateIMC(){}
