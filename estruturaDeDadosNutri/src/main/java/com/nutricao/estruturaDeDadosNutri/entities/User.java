@@ -33,6 +33,11 @@ public class User implements Serializable {
 		return name;
 	}
 
+	public User() {
+		
+	}
+	
+	
 	public User(Long id, String name, int age, float weight, float height, float bodyWeight, float imc) {
 		super();
 		this.id = id;

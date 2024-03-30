@@ -9,26 +9,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nutricao.estruturaDeDadosNutri.entities.User;
-import com.nutricao.estruturaDeDadosNutri.services.UserServices;
+import com.nutricao.estruturaDeDadosNutri.entities.Food;
+import com.nutricao.estruturaDeDadosNutri.services.FoodServices;
 
+//pronto
 @RestController
-@RequestMapping(value = "/users")
-public class UserResources {
+@RequestMapping(value = "/foods")
+public class FoodResources {
 	
 	@Autowired
-	private UserServices service;
+	private FoodServices service;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll(){
-		//User u = new User(1L, "Maria", 20, (float)49.6 , (float)1.65, (float)50, 12);
-		List<User> list = service.findAll();
+	public ResponseEntity<List<Food>> findAll(){
+		//Food u = new Food(1L, "melancia", 20, 30, 40, 59, 5); //teste
+		List<Food> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id){
-		User obj = service.findById(id);
+	public ResponseEntity<Food> findById(@PathVariable Long id){
+		Food obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }
