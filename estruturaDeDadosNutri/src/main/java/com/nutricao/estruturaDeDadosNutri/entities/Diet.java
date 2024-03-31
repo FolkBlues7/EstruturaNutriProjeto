@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,7 +20,9 @@ public class Diet implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	//private List<Meal> meals = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "diet")
+	private List<Meal> meals = new ArrayList<>();
 
 	public Diet() {
 
@@ -28,12 +31,12 @@ public class Diet implements Serializable {
 	public Diet(Long id, List<Meal> meals) {
 		super();
 		this.id = id;
-	//	this.meals = meals;
+		this.meals = meals;
 	}
 
-	//public List<Meal> getMeals() {
-	//	return meals;
-	//}
+	public List<Meal> getMeals() {
+		return meals;
+	}
 
 	public Long getId() {
 		return id;

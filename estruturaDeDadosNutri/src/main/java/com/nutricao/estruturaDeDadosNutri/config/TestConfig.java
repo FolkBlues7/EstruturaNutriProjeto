@@ -30,8 +30,8 @@ public class TestConfig implements CommandLineRunner {
 	//TUDO DENTRO DESSE MÉTODO SERÁ RODADO JUNTO DO INÍCIO
 	@Override
 	public void run(String... args) throws Exception {
-		User u1 = new User(null, "Maria", 20, (float)49.6 , (float)1.65, (float)50, 12);
-		User u2 = new User(null, "João", 20, (float)35.6 , (float)1.65, (float)50, 12);
+		User u1 = new User(null, "Maria", 20, (float)49.6 , (float)1.65, (float)50, 12, null);
+		User u2 = new User(null, "João", 20, (float)35.6 , (float)1.65, (float)50, 12, null);
 		
 		Food f1 = new Food(null, "Macarrão", (float)20, (float)10, (float)4, (float)3, (float)3);
 		//Food f2 = new Food(null, "Fe", 85, 100, 26, 6, 2);

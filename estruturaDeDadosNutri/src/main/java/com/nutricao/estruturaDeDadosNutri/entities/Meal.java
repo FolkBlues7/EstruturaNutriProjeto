@@ -11,7 +11,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,9 +25,14 @@ public class Meal implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToMany
-	//@JoinColumn(name = "name")
-	private List<Food> foods = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name = "diet_id")
+	private Diet diet;
+	
+	
+	@ManyToMany
+    @JoinTable(name = "meal_food")
+    private List<Food> foods = new ArrayList<>();
 	private boolean status;
 	private LocalDateTime mealTime;
 	
@@ -55,10 +62,6 @@ public class Meal implements Serializable {
 
 	public List<Food> getFoods() {
 		return foods;
-	}
-
-	public void setFoods(ArrayList<Food> foods) {
-		this.foods = foods;
 	}
 
 	public boolean isStatus() {
@@ -99,6 +102,15 @@ public class Meal implements Serializable {
 	public void setMealTime(LocalDateTime mealTime) {
 		this.mealTime = mealTime;
 	}
+
+	public Diet getDiet() {
+		return diet;
+	}
+
+	public void setDiet(Diet diet) {
+		this.diet = diet;
+	}
+	
 	
 	
 }

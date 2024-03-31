@@ -22,4 +22,8 @@ public class MealServices {
 		Optional<Meal> obj = repository.findById(id);
 		return obj.get();
 	}
+
+	public Meal insert(Meal obj) {
+		return repository.save(obj);
+	}
 }

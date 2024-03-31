@@ -22,4 +22,8 @@ public class FoodServices {
 		Optional<Food> obj = repository.findById(id);
 		return obj.get();
 	}
+	
+	public Food insert(Food obj) {
+		return repository.save(obj);
+	}
 }

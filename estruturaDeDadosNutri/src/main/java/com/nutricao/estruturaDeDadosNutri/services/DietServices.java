@@ -23,4 +23,8 @@ public class DietServices {
 		Optional<Diet> obj = repository.findById(id);
 		return obj.get();
 	}
+	
+	public Diet insert(Diet diet) {
+		return repository.save(diet);
+	}
 }

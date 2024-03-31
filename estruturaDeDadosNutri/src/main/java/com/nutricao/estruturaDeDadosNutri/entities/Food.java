@@ -89,8 +89,15 @@ public class Food implements Serializable {
 	public void setLipids(float lipids) {
 		this.lipids = lipids;
 	}
-
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	//hashcode e equals
 	@Override
 	public int hashCode() {
