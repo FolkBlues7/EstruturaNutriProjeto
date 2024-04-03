@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,39 +13,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.nutricao.estruturaDeDadosNutri.entities.User;
-import com.nutricao.estruturaDeDadosNutri.services.UserServices;
+import com.nutricao.estruturaDeDadosNutri.entities.Diet;
+import com.nutricao.estruturaDeDadosNutri.services.DietServices;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResources {
+@RequestMapping(value = "/diets")
+public class DietResources {
 	
 	@Autowired
-	private UserServices service;
+	private DietServices service;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll(){
-		//User u = new User(1L, "Maria", 20, (float)49.6 , (float)1.65, (float)50, 12);
-		List<User> list = service.findAll();
+	public ResponseEntity<List<Diet>> findAll(){
+		//Food u = new Food(1L, "laranja", 20, 30, 40, 59, 5);
+		//ArrayList<Food> comidas = new ArrayList<>();
+		//comidas.add(u);
+		//Meal meal = new Meal(1L, comidas, true, LocalDateTime.of(2024, 3, 19, 14, 30, 0));
+		//ArrayList<Meal> refeicoes = new ArrayList<>();
+		//refeicoes.add(meal);
+		//Diet diet = new Diet(refeicoes);
+		
+		List<Diet> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id){
-		User obj = service.findById(id);
+	public ResponseEntity<Diet> findById(@PathVariable Long id){
+		Diet obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<User> insert(@RequestBody User obj){
+	public ResponseEntity<Diet> insert(@RequestBody Diet obj){
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
-	}
-	
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
-		service.delete(id);
-		return ResponseEntity.noContent().build();
 	}
 }

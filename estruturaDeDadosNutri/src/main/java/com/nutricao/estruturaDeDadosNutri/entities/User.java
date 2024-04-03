@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,19 +25,11 @@ public class User implements Serializable {
 	private float height;
 	private float bodyWeight;
 	private float imc;
-
-	public User() {
-
-	}
-	//private diet = nova dieta e tals;
 	
-
-	//Fazer o tratamento de exceções nos getter e setter, pois apenas gera-los não garante encapsulamento
-	public String getName() {
-		return name;
-	}
-
-	public User(Long id, String name, int age, float weight, float height, float bodyWeight, float imc) {
+	@OneToOne
+	private Diet diet = new Diet();
+	
+	public User(Long id, String name, int age, float weight, float height, float bodyWeight, float imc, Diet diet) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -45,7 +38,18 @@ public class User implements Serializable {
 		this.height = height;
 		this.bodyWeight = bodyWeight;
 		this.imc = imc;
+		this.diet = diet;
 	}
+	
+	public User() {
+		
+	}
+	
+	
+	//Fazer o tratamento de excessões nos getter e setter, pois apenas gera-los não garante encapsulamento
+	public String getName() {
+		return name;
+	}	
 
 	public void setName(String name) {
 		this.name = name;
@@ -102,6 +106,14 @@ public class User implements Serializable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public Diet getDiet() {
+		return diet;
+	}
+
+	public void setDiet(Diet diet) {
+		this.diet = diet;
 	}
 	
 	//método de dar update no IMC, quando tiver o BD
