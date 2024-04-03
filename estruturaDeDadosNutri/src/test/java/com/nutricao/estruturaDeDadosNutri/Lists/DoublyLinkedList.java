@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 
 public class DoublyLinkedList<E> implements ListExtension<E> {
 
-    class Node {
+    private class Node {
         E data;
         Node next;
         Node prev;

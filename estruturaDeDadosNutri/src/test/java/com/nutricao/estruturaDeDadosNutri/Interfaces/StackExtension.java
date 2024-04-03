@@ -1,13 +1,15 @@
 package com.nutricao.estruturaDeDadosNutri.Interfaces;
 
 import java.util.List;
+import java.util.Vector;
 
-public interface StackExtension<E> extends List<E> {
+public interface StackExtension<E> {
 
-    E peek();
-    E pop();
-    E push(E element);
-    boolean empty();
-    int search(Object o);
+    public E peek();
+    public E pop();
+    public void push(E element);
+    public int size();
+    public boolean isEmpty();
+    public boolean contains(Object o);
 
 }

@@ -10,7 +10,7 @@ import java.util.*;
 
 public class SinglyLinkedList<E> implements ListExtension<E> {
     
-    class Node {
+    private class Node {
         E data;
         Node next;
         
