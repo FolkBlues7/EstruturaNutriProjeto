@@ -2,11 +2,11 @@ package com.nutricao.estruturaDeDadosNutri.Lists;
 
 import com.nutricao.estruturaDeDadosNutri.Interfaces.ListExtension;
 import com.sun.istack.NotNull;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class DoublyLinkedList<E> implements ListExtension<E> {
 
@@ -120,7 +120,7 @@ public class DoublyLinkedList<E> implements ListExtension<E> {
         if (isEmpty()) {
             System.out.println("The Doubly Linked List is empty");
         } else {
-            System.out.println("The Singly Linked List is as follows:");
+            System.out.println("The Doubly Linked List is as follows:");
             Node currentNode = head;
             while (currentNode != null) {
                 System.out.print(" " + currentNode.data);
@@ -137,7 +137,7 @@ public class DoublyLinkedList<E> implements ListExtension<E> {
         if (isEmpty()) {
             System.out.println("The Doubly Linked List is empty");
         } else {
-            System.out.println("The Singly Linked List is as follows:");
+            System.out.println("The Doubly Linked List is as follows:");
             Node currentNode = tail;
             while (currentNode != null) {
                 System.out.print(" " + currentNode.data);
@@ -180,7 +180,24 @@ public class DoublyLinkedList<E> implements ListExtension<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<E>() {
+            private Node currentNode = head;
+
+            @Override
+            public boolean hasNext() {
+                return currentNode != null;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                E data = currentNode.data;
+                currentNode = currentNode.next;
+                return data;
+            }
+        };
     }
 
     @Override
@@ -274,28 +291,89 @@ public class DoublyLinkedList<E> implements ListExtension<E> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean containsAll(Collection<?> c) {
-        return false;
+        List<E> list = (List<E>) c;
+        for (E e : list) {
+            if (!contains(e)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        return false;
+        for (E e : c) {
+            add(e);
+        }
+        return true;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        List<E> list = (List<E>) c;
+        Node currentNode = head;
+        for (int i = 0; i < index; i++) {
+            currentNode = currentNode.next;
+        }
+        for (E e : list) {
+            Node newNode = new Node(e);
+            newNode.next = currentNode.next;
+            newNode.prev = currentNode;
+            if (currentNode.next != null) {
+                currentNode.next.prev = newNode;
+            } else {
+                tail = newNode;
+            }
+            currentNode.next = newNode;
+            currentNode = newNode;
+        }
+        size += list.size();
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        boolean modified = false;
+        for (Object o : c) {
+            modified |= remove(o);
+        }
+        return modified;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        boolean modified = false;
+        Node currentNode = head;
+        while (currentNode != null) {
+            if (!c.contains(currentNode.data)) {
+                Node nextNode = currentNode.next;
+                if (currentNode == head) {
+                    head = nextNode;
+                    if (nextNode != null) {
+                        nextNode.prev = null;
+                    }
+                } else if (currentNode == tail) {
+                    tail = currentNode.prev;
+                    tail.next = null;
+                } else {
+                    Node prevNode = currentNode.prev;
+                    prevNode.next = nextNode;
+                    nextNode.prev = prevNode;
+                }
+                currentNode.next = null;
+                currentNode.prev = null;
+                size--;
+                modified = true;
+            }
+            currentNode = currentNode.next;
+        }
+        return modified;
     }
 
     @Override
@@ -439,12 +517,260 @@ public class DoublyLinkedList<E> implements ListExtension<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        return null;
+        return new ListIterator<E>() {
+            private Node currentNode = head;
+            private Node lastAccessed = null;
+            private int nextIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentNode != null;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                E data = currentNode.data;
+                lastAccessed = currentNode;
+                currentNode = currentNode.next;
+                nextIndex++;
+                return data;
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return lastAccessed != null;
+            }
+
+            @Override
+            public E previous() {
+                if (!hasPrevious()) {
+                    throw new NoSuchElementException();
+                }
+                E data = lastAccessed.data;
+                currentNode = lastAccessed;
+                lastAccessed = null;
+                nextIndex--;
+                return data;
+            }
+
+            @Override
+            public int nextIndex() {
+                return nextIndex;
+            }
+
+            @Override
+            public int previousIndex() {
+                return nextIndex - 1;
+            }
+
+            @Override
+            public void remove() {
+                if (lastAccessed == null) {
+                    throw new IllegalStateException();
+                }
+                Node nextNode = lastAccessed.next;
+                Node prevNode = lastAccessed.prev;
+
+                if (prevNode == null) {
+                    head = nextNode;
+                } else {
+                    prevNode.next = nextNode;
+                    lastAccessed.prev = null;
+                }
+
+                if (nextNode == null) {
+                    tail = prevNode;
+                } else {
+                    nextNode.prev = prevNode;
+                    lastAccessed.next = null;
+                }
+
+                if (currentNode == lastAccessed) {
+                    currentNode = nextNode;
+                } else {
+                    nextIndex--;
+                }
+
+                lastAccessed = null;
+                size--;
+            }
+
+            @Override
+            public void set(E e) {
+                if (lastAccessed == null) {
+                    throw new IllegalStateException();
+                }
+                lastAccessed.data = e;
+            }
+
+            @Override
+            public void add(E e) {
+                if (e == null) {
+                    throw new NullPointerException();
+                }
+                lastAccessed = null;
+                Node newNode = new Node(e);
+
+                if (currentNode == null) {
+                    newNode.prev = tail;
+                    newNode.next = null;
+                    tail = newNode;
+                    if (head == null) {
+                        head = newNode;
+                    }
+                } else {
+                    newNode.prev = currentNode.prev;
+                    newNode.next = currentNode;
+                    currentNode.prev = newNode;
+                    if (newNode.prev == null) {
+                        head = newNode;
+                    } else {
+                        newNode.prev.next = newNode;
+                    }
+                }
+
+                size++;
+                nextIndex++;
+            }
+        };
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return null;
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        return new ListIterator<E>() {
+            private Node currentNode = getNode(index);
+            private Node lastAccessedNode = null;
+            private int nextIndex = index;
+
+            @Override
+            public boolean hasNext() {
+                return nextIndex < size;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                lastAccessedNode = currentNode;
+                E data = currentNode.data;
+                currentNode = currentNode.next;
+                nextIndex++;
+                return data;
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return nextIndex > 0;
+            }
+
+            @Override
+            public E previous() {
+                if (!hasPrevious()) {
+                    throw new NoSuchElementException();
+                }
+                currentNode = (currentNode == null) ? tail : currentNode.prev;
+                lastAccessedNode = currentNode;
+                E data = currentNode.data;
+                nextIndex--;
+                return data;
+            }
+
+            @Override
+            public int nextIndex() {
+                return nextIndex;
+            }
+
+            @Override
+            public int previousIndex() {
+                return nextIndex - 1;
+            }
+
+            @Override
+            public void remove() {
+                if (lastAccessedNode == null) {
+                    throw new IllegalStateException();
+                }
+                Node nextNode = lastAccessedNode.next;
+                Node prevNode = lastAccessedNode.prev;
+
+                if (prevNode == null) {
+                    head = nextNode;
+                } else {
+                    prevNode.next = nextNode;
+                    lastAccessedNode.prev = null;
+                }
+
+                if (nextNode == null) {
+                    tail = prevNode;
+                } else {
+                    nextNode.prev = prevNode;
+                    lastAccessedNode.next = null;
+                }
+
+                if (currentNode == lastAccessedNode) {
+                    currentNode = nextNode;
+                } else {
+                    nextIndex--;
+                }
+
+                lastAccessedNode = null;
+                size--;
+            }
+
+            @Override
+            public void set(E e) {
+                if (lastAccessedNode == null) {
+                    throw new IllegalStateException();
+                }
+                lastAccessedNode.data = e;
+            }
+
+            @Override
+            public void add(E e) {
+                if (e == null) {
+                    throw new NullPointerException();
+                }
+                lastAccessedNode = null;
+                Node newNode = new Node(e);
+
+                if (currentNode == null) {
+                    newNode.prev = tail;
+                    newNode.next = null;
+                    tail = newNode;
+                    if (head == null) {
+                        head = newNode;
+                    }
+                } else {
+                    newNode.prev = currentNode.prev;
+                    newNode.next = currentNode;
+                    currentNode.prev = newNode;
+                    if (newNode.prev == null) {
+                        head = newNode;
+                    } else {
+                        newNode.prev.next = newNode;
+                    }
+                }
+
+                size++;
+                nextIndex++;
+            }
+
+            private Node getNode(int index) {
+                Node node = head;
+                for (int i = 0; i < index; i++) {
+                    node = node.next;
+                }
+                return node;
+            }
+        };
     }
 
     @Override
