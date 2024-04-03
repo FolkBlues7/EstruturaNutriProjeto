@@ -109,7 +109,7 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
     }
     
     @Override
-    public boolean add(@NotNull E e) {
+    public boolean add(E e) {
         if (e == null) {
             throw new NullPointerException();
         }
@@ -142,7 +142,7 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
     }
     
     @Override
-    public boolean containsAll(@NotNull Collection<?> c) {
+    public boolean containsAll(Collection<?> c) {
         if (c == null) {
             throw new NullPointerException();
         }
@@ -161,12 +161,17 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
     }
     
     @Override
-    public boolean addAll(@NotNull Collection<? extends E> c) {
+    public boolean addAll(Collection<? extends E> c) {
         if (c == null) {
             throw new NullPointerException();
         }
         if (c.contains(null)) {
             throw new NullPointerException();
+        }
+        for (E element : c) {
+            if (element == null) {
+                throw new NullPointerException();
+            }
         }
         for (E element : c) {
             add(element);
@@ -175,7 +180,7 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
     }
     
     @Override
-    public boolean addAll(int index, @NotNull Collection<? extends E> c) {
+    public boolean addAll(int index, Collection<? extends E> c) {
         if (c == null) {
             throw new NullPointerException();
         }
@@ -190,6 +195,11 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
             currentNode = currentNode.next;
         }
         for (E element : c) {
+            if (element == null) {
+                throw new NullPointerException();
+            }
+        }
+        for (E element : c) {
             Node newNode = new Node(element);
             newNode.next = currentNode.next;
             currentNode.next = newNode;
@@ -200,7 +210,7 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
     }
     
     @Override
-    public boolean removeAll(@NotNull Collection<?> c) {
+    public boolean removeAll(Collection<?> c) {
         if (c == null) {
             throw new NullPointerException();
         }
@@ -215,7 +225,7 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
     }
     
     @Override
-    public boolean retainAll(@NotNull Collection<?> c) {
+    public boolean retainAll(Collection<?> c) {
         if (c == null) {
             throw new NullPointerException();
         }
@@ -267,6 +277,9 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
     
     @Override
     public E set(int index, E element) { // TODO: add in docs the difference with add(index) + that size isn't changed
+        if (element == null) {
+            throw new NullPointerException();
+        }
         if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException();
         }
@@ -295,14 +308,14 @@ public class SinglyLinkedList<E> implements ListExtension<E> {
     
     @Override
     public void add(int index, E element) {
+        if (element == null) {
+            throw new NullPointerException();
+        }
         if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException();
         }
         if (isEmpty()) {
             throw new ArrayIndexOutOfBoundsException();
-        }
-        if (element == null) {
-            throw new NullPointerException();
         }
         Node newNode = new Node(element);
         Node currentNode = head;
