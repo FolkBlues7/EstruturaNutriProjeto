@@ -19,6 +19,12 @@ public class LinkedStack<E> implements StackExtension<E> {
     private Node bottom;
     private Node top;
 
+    public LinkedStack() {
+        bottom = null;
+        top = null;
+        size = 0;
+    }
+
     @Override
     public E peek() {
         if (isEmpty()) {
