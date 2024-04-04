@@ -129,38 +129,100 @@ public class LinkedQueue<E> implements QueueExtension<E> {
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        Node current = beginning;
+        int i = 0;
+        while (current != null) {
+            array[i++] = current.data;
+            current = current.next;
+        }
+        return array;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public <T> T[] toArray(T[] a) {
+        if (a.length < size) {
+            a = (T[]) new Object[size];
+        }
+        Node current = beginning;
+        int i = 0;
+        while (current != null) {
+            a[i++] = (T) current.data;
+            current = current.next;
+        }
+        return a;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for (Object o : c) {
+            Node currentNode = beginning;
+            boolean found = false;
+            while (currentNode != null) {
+                if (currentNode.data.equals(o)) {
+                    found = true;
+                    break;
+                }
+                currentNode = currentNode.next;
+            }
+            if (!found) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public boolean addAll(Collection<? extends E> c) {
-        return false;
+        for (E o : c) {
+            add(o);
+        }
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        for (Object o : c) {
+            if (!remove(o)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        Node current = beginning;
+        while (current != null) {
+            if (!c.contains(current.data)) {
+                remove(current.data);
+            }
+            current = current.next;
+        }
+        return true;
     }
 
     @Override
     public Iterator<E> iterator() {
-        return null;
-    }
+        return new Iterator<E>() {
+            private Node current = beginning;
 
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
 
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
+            @Override
+            public E next() {
+                E data = current.data;
+                current = current.next;
+                return data;
+            }
+
+        };
     }
 
 }
