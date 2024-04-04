@@ -1,7 +1,6 @@
 package com.nutricao.estruturaDeDadosNutri.DataStructures;
 
-import com.nutricao.estruturaDeDadosNutri.Interfaces.QueueExtension;
-
+import com.nutricao.estruturaDeDadosNutri.DataStructures.Interfaces.QueueExtension;
 import java.util.Collection;
 import java.util.Iterator;
 

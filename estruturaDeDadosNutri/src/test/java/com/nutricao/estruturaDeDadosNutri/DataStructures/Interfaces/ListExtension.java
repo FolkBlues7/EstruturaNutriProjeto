@@ -1,4 +1,4 @@
-package com.nutricao.estruturaDeDadosNutri.Interfaces;
+package com.nutricao.estruturaDeDadosNutri.DataStructures.Interfaces;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 

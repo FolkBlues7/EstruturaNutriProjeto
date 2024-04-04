@@ -1,6 +1,6 @@
 package com.nutricao.estruturaDeDadosNutri.DataStructures;
 
-import com.nutricao.estruturaDeDadosNutri.Interfaces.StackExtension;
+import com.nutricao.estruturaDeDadosNutri.DataStructures.Interfaces.StackExtension;
 
 public class LinkedStack<E> implements StackExtension<E> {
 

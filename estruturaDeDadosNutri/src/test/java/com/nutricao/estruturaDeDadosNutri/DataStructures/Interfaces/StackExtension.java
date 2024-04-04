@@ -1,4 +1,4 @@
-package com.nutricao.estruturaDeDadosNutri.Interfaces;
+package com.nutricao.estruturaDeDadosNutri.DataStructures.Interfaces;
 
 import java.util.List;
 import java.util.Vector;
