@@ -1,7 +1,7 @@
-package com.nutricao.estruturaDeDadosNutri.Lists;
+package com.nutricao.estruturaDeDadosNutri.DataStructures;
 
 import com.nutricao.estruturaDeDadosNutri.Interfaces.ListExtension;
-import com.sun.istack.NotNull;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +21,12 @@ public class DoublyLinkedList<E> implements ListExtension<E> {
     private Node head;
     private Node tail;
     private int size;
+
+    public DoublyLinkedList() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
 
     @Override
     public boolean addFirst(E e) {

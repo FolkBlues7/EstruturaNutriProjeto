@@ -1,4 +1,4 @@
-package com.nutricao.estruturaDeDadosNutri.Lists;
+package com.nutricao.estruturaDeDadosNutri.DataStructures;
 
 import com.nutricao.estruturaDeDadosNutri.Interfaces.ListExtension;
 import com.sun.istack.NotNull;

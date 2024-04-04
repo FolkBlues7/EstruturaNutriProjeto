@@ -1,8 +1,6 @@
-package com.nutricao.estruturaDeDadosNutri.Lists;
+package com.nutricao.estruturaDeDadosNutri.DataStructures;
 
 import com.nutricao.estruturaDeDadosNutri.Interfaces.StackExtension;
-
-import java.util.NoSuchElementException;
 
 public class LinkedStack<E> implements StackExtension<E> {
 
