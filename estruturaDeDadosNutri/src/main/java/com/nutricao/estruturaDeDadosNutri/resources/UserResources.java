@@ -26,7 +26,6 @@ public class UserResources {
 	
 	@GetMapping
 	public ResponseEntity<List<User>> findAll(){
-		//User u = new User(1L, "Maria", 20, (float)49.6 , (float)1.65, (float)50, 12);
 		List<User> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
@@ -44,9 +43,13 @@ public class UserResources {
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
+	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	//@PostMapping(value = "/addDietToUser/{id}")
+	//public ResponseEntity<Void>(@PathVariable) 
 }

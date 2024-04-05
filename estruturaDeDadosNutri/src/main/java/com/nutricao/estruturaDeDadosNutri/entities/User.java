@@ -27,9 +27,9 @@ public class User implements Serializable {
 	private float imc;
 	
 	@OneToOne
-	private Diet diet = new Diet();
+	private Diet diet;
 	
-	public User(Long id, String name, int age, float weight, float height, float bodyWeight, float imc, Diet diet) {
+	public User(Long id, String name, int age, float weight, float height, float bodyWeight, float imc) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -38,7 +38,7 @@ public class User implements Serializable {
 		this.height = height;
 		this.bodyWeight = bodyWeight;
 		this.imc = imc;
-		this.diet = diet;
+		this.diet = new Diet();
 	}
 	
 	public User() {

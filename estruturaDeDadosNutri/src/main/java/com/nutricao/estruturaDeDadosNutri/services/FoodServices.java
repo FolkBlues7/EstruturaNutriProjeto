@@ -22,8 +22,23 @@ public class FoodServices {
 		Optional<Food> obj = repository.findById(id);
 		return obj.get();
 	}
-	
+
 	public Food insert(Food obj) {
 		return repository.save(obj);
 	}
+
+	public Food update(Food obj) {
+		if (obj.getId() == null || !repository.existsById(obj.getId())) {
+			throw new RuntimeException("Food not found");
+		}
+		return repository.save(obj);
+	}
+
+	public void deleteById(Long id) {
+		if (!repository.existsById(id)) {
+			throw new RuntimeException("Food not found");
+		}
+		repository.deleteById(id);
+	}
+
 }

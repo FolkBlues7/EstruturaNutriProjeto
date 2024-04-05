@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,12 +30,13 @@ public class Meal implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "diet_id")
+	@JsonIgnore
 	private Diet diet;
 	
 	
-	@ManyToMany
-    @JoinTable(name = "meal_food")
-    private List<Food> foods = new ArrayList<>();
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "meal_food")
+    private List<Food> foods;
 	private boolean status;
 	private LocalDateTime mealTime;
 	
@@ -42,10 +46,10 @@ public class Meal implements Serializable {
 	}
 
 	//construtor
-	public Meal(Long id, ArrayList<Food> foods, boolean status, LocalDateTime mealTime) {
+	public Meal(Long id, boolean status, LocalDateTime mealTime) {
 		super();
 		this.id = id;
-		this.foods = foods;
+		this.foods = new ArrayList<Food>();
 		this.status = status;
 		this.setMealTime(mealTime);
 	}

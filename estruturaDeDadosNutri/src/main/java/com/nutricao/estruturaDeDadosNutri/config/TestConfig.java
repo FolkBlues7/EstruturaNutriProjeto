@@ -30,10 +30,10 @@ public class TestConfig implements CommandLineRunner {
 	//TUDO DENTRO DESSE MÉTODO SERÁ RODADO JUNTO DO INÍCIO
 	@Override
 	public void run(String... args) throws Exception {
-		User u1 = new User(null, "Maria", 20, (float)49.6 , (float)1.65, (float)50, 12, null);
-		User u2 = new User(null, "João", 20, (float)35.6 , (float)1.65, (float)50, 12, null);
+		//User u1 = new User(null, "Maria", 20, (float)49.6 , (float)1.65, (float)50, 12, null);
+		//User u2 = new User(null, "João", 20, (float)35.6 , (float)1.65, (float)50, 12, null);
 		
-		Food f1 = new Food(null, "Macarrão", (float)20, (float)10, (float)4, (float)3, (float)3);
+		//Food f1 = new Food(null, "Macarrão", (float)20, (float)10, (float)4, (float)3, (float)3);
 		//Food f2 = new Food(null, "Fe", 85, 100, 26, 6, 2);
 		//Food f3 = new Food(null, "Ar", 95, 100, 29, 3, 1);
 		//Food f4 = new Food(null, "Ca", 179, 100, 37, 0, 3);
@@ -48,10 +48,10 @@ public class TestConfig implements CommandLineRunner {
 		//ArrayList<Meal> refeicoes = new ArrayList<>();
 		//refeicoes.add(m1); //refeicoes.add(m2); refeicoes.add(m3); refeicoes.add(m4);
 		//Diet dieta = new Diet(refeicoes);
-		foodRepository.save(f1);
+		//foodRepository.save(f1);
 		//mealRepository.saveAll(Arrays.asList(m1));
 		//dietRepository.save(dieta);
-		userRepository.saveAll(Arrays.asList(u1, u2));
+		//userRepository.saveAll(Arrays.asList(u1, u2));
 	}
 	
 }
