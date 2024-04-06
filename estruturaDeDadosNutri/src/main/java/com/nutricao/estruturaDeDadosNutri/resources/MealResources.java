@@ -55,14 +55,15 @@ public class MealResources {
 	
 	@PostMapping(value = "/{mealId}/foods")
 	public ResponseEntity<Meal> addFoodsToMeal(@PathVariable Long mealId, @RequestBody List<Long> foodIds) {
-		try {
-			Meal meal = service.addFoodsToMeal(mealId, foodIds);
-			return ResponseEntity.ok().body(meal);
-		} catch (Exception e) {
-			
-		}
-		return null;
+	    try {
+	        Meal meal = service.addFoodsToMeal(mealId, foodIds);
+	        return ResponseEntity.ok().body(meal);
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Adiciona isso para imprimir a stack trace da exceção
+	        return ResponseEntity.badRequest().build(); // Retorna uma resposta de erro 400
+	    }
 	}
+
 	
 	
 

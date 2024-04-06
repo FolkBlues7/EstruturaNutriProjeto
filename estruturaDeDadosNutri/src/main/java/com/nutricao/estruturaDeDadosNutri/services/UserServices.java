@@ -30,4 +30,11 @@ public class UserServices {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+	
+	public User update(User obj) {
+		if (obj.getId() == null || !repository.existsById(obj.getId())) {
+			throw new RuntimeException("Food not found");
+		}
+		return repository.save(obj);
+	}
 }

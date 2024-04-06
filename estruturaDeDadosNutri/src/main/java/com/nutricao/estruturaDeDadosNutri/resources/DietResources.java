@@ -56,6 +56,8 @@ public class DietResources {
         return ResponseEntity.ok().body(updatedDiet);
     }
 	
+
+	
 	@PutMapping(value = "/update/{id}")
 	public ResponseEntity<Diet> update(@PathVariable Long id, @RequestBody Diet obj){
 	    obj.setId(id); // Garantir que o objeto tenha o ID correto

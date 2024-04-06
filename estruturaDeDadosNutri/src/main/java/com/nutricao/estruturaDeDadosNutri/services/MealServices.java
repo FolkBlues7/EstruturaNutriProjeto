@@ -12,6 +12,8 @@ import com.nutricao.estruturaDeDadosNutri.entities.Meal;
 import com.nutricao.estruturaDeDadosNutri.repositories.FoodRepository;
 import com.nutricao.estruturaDeDadosNutri.repositories.MealRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class MealServices {
 	@Autowired
@@ -30,7 +32,7 @@ public class MealServices {
 		Optional<Meal> obj = repository.findById(id);
 		return obj.get();
 	}
-
+	
 	public Meal insert(Meal obj) {
 		return repository.save(obj);
 	}
@@ -42,6 +44,7 @@ public class MealServices {
 		return repository.save(obj);
 	}
 
+	@Transactional
 	public Meal addFoodsToMeal(Long mealId, List<Long> foodIds) {
 		Optional<Meal> optionalMeal = repository.findById(mealId);
 		if (!optionalMeal.isPresent()) {

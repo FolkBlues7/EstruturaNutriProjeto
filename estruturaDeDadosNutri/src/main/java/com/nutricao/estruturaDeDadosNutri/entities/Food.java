@@ -1,12 +1,15 @@
 package com.nutricao.estruturaDeDadosNutri.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +26,9 @@ public class Food implements Serializable {
 	private float carbohydrates;
 	private float proteins;
 	private float lipids;
+	
+	@ManyToMany(mappedBy = "foods")
+	private List<Meal> meals = new ArrayList<>();
 	
 	//construtor vazio
 	public Food() {

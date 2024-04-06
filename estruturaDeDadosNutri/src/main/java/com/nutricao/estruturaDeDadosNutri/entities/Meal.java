@@ -9,7 +9,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,9 +33,11 @@ public class Meal implements Serializable {
 	private Diet diet;
 	
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "meal_food")
-    private List<Food> foods;
+	@ManyToMany
+	@JoinTable(name = "meal_food",
+	           joinColumns = @JoinColumn(name = "meal_id"),
+	           inverseJoinColumns = @JoinColumn(name = "foods_id"))
+	private List<Food> foods = new ArrayList<>();
 	private boolean status;
 	private LocalDateTime mealTime;
 	

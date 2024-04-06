@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,10 @@ public class UserResources {
 		return ResponseEntity.noContent().build();
 	}
 	
-	//@PostMapping(value = "/addDietToUser/{id}")
-	//public ResponseEntity<Void>(@PathVariable) 
+	@PutMapping(value = "/update/{id}")
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
+	    obj.setId(id); // Garantir que o objeto tenha o ID correto
+	    obj = service.update(obj); // Atualizar o objeto no banco de dados
+	    return ResponseEntity.ok().body(obj);
+	}
 }
