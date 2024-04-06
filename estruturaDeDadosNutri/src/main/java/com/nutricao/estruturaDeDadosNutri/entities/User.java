@@ -95,6 +95,7 @@ public class User implements Serializable {
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -114,8 +115,6 @@ public class User implements Serializable {
 	public void setDiet(Diet diet) {
 		this.diet = diet;
 	}
-	
-	
 	
 	//método de dar update no IMC, quando tiver o BD
 	//public updateIMC(){}
