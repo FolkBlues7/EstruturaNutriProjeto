@@ -3,7 +3,7 @@ package com.nutricao.estruturaDeDadosNutri.SortingMethods;
 import com.nutricao.estruturaDeDadosNutri.DataStructures.DoublyLinkedList;
 import java.util.Collection;
 
-public class SelectSort<E extends Comparable<E>> implements Sorter<E>{
+public class SelectSort<E extends Comparable<E>> implements Sorter<E> {
 
     @Override
     public Collection<E> sort(Collection<E> list) {
