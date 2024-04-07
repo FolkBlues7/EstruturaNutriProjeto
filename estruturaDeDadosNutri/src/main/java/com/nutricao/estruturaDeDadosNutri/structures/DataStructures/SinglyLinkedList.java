@@ -1,6 +1,6 @@
-package com.nutricao.estruturaDeDadosNutri.DataStructures;
+package com.nutricao.estruturaDeDadosNutri.structures.DataStructures;
 
-import com.nutricao.estruturaDeDadosNutri.DataStructures.Interfaces.ListExtension;
+import com.nutricao.estruturaDeDadosNutri.structures.DataStructures.Interfaces.ListExtension;
 import java.util.*;
 
 //TODO: make docs
