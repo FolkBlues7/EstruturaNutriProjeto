@@ -44,8 +44,7 @@ public class User implements Serializable {
 	public User() {
 		
 	}
-	
-	
+
 	//Fazer o tratamento de excessões nos getter e setter, pois apenas gera-los não garante encapsulamento
 	public String getName() {
 		return name;
@@ -115,7 +114,8 @@ public class User implements Serializable {
 	public void setDiet(Diet diet) {
 		this.diet = diet;
 	}
-	
+
+	//TODO
 	//método de dar update no IMC, quando tiver o BD
 	//public updateIMC(){}
 }

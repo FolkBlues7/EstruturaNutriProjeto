@@ -130,10 +130,10 @@ public class DoublyLinkedList<E> implements ListExtension<E> {
             Node currentNode = head;
             while (currentNode != null) {
                 System.out.print(" " + currentNode.data);
-                currentNode = currentNode.next;
                 if (currentNode.next != null) {
-                    System.out.println(",");
+                    System.out.print(",");
                 }
+                currentNode = currentNode.next;
             }
         }
     }

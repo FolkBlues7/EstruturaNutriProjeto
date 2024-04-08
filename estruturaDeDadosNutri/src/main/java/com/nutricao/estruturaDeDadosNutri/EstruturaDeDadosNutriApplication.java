@@ -1,11 +1,10 @@
 package com.nutricao.estruturaDeDadosNutri;
 
+import com.nutricao.estruturaDeDadosNutri.entities.Food;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.nutricao.estruturaDeDadosNutri.entities.Diet;
-import com.nutricao.estruturaDeDadosNutri.entities.User;
 import com.nutricao.estruturaDeDadosNutri.services.DietServices;
 import com.nutricao.estruturaDeDadosNutri.services.FoodServices;
 import com.nutricao.estruturaDeDadosNutri.services.MealServices;
@@ -33,9 +32,6 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        DoublyLinkedList list = new DoublyLinkedList();
-        System.out.println("Lista vazia: " + list);
 
     	//FOOD:--------------------------------------------------------------------
     	//criando uma nova food:

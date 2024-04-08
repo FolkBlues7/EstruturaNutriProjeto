@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.nutricao.estruturaDeDadosNutri.structures.DataStructures.DoublyLinkedList;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class Diet implements Serializable {
 	private Long id;
 	
 	@OneToMany(mappedBy = "diet", fetch = FetchType.EAGER)
-	private List<Meal> meals = new ArrayList<>();
+	private List<Meal> meals = new DoublyLinkedList<>();
 
 	public Diet() {
 

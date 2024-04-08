@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.nutricao.estruturaDeDadosNutri.structures.DataStructures.DoublyLinkedList;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +29,7 @@ public class Food implements Serializable {
 	private float lipids;
 	
 	@ManyToMany(mappedBy = "foods")
-	private List<Meal> meals = new ArrayList<>();
+	private List<Meal> meals = new DoublyLinkedList<>();
 	
 	//construtor vazio
 	public Food() {

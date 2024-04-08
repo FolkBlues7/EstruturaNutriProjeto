@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.nutricao.estruturaDeDadosNutri.structures.DataStructures.DoublyLinkedList;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,7 +38,7 @@ public class Meal implements Serializable {
 	@JoinTable(name = "meal_food",
 	           joinColumns = @JoinColumn(name = "meal_id"),
 	           inverseJoinColumns = @JoinColumn(name = "foods_id"))
-	private List<Food> foods = new ArrayList<>();
+	private List<Food> foods = new DoublyLinkedList<>();
 	private boolean status;
 	private LocalDateTime mealTime;
 	
