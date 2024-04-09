@@ -11,6 +11,7 @@ import com.nutricao.estruturaDeDadosNutri.repositories.FoodRepository;
 
 @Service
 public class FoodServices {
+
 	@Autowired
 	private FoodRepository repository;
 

@@ -9,19 +9,11 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.nutricao.estruturaDeDadosNutri.structures.DataStructures.DoublyLinkedList;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_meal")
-public class Meal implements Serializable {
+public class Meal implements Serializable, Comparable<Meal> {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -34,7 +26,7 @@ public class Meal implements Serializable {
 	private Diet diet;
 	
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "meal_food",
 	           joinColumns = @JoinColumn(name = "meal_id"),
 	           inverseJoinColumns = @JoinColumn(name = "foods_id"))
@@ -51,7 +43,7 @@ public class Meal implements Serializable {
 	public Meal(Long id, boolean status, LocalDateTime mealTime) {
 		super();
 		this.id = id;
-		this.foods = new ArrayList<Food>();
+		this.foods = new DoublyLinkedList<Food>();
 		this.status = status;
 		this.setMealTime(mealTime);
 	}
@@ -81,7 +73,6 @@ public class Meal implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 	
 	//hashcode e equals
 	@Override
@@ -116,7 +107,10 @@ public class Meal implements Serializable {
 	public void setDiet(Diet diet) {
 		this.diet = diet;
 	}
-	
-	
-	
+
+	@Override
+	public int compareTo(Meal other) {
+		return this.mealTime.compareTo(other.mealTime);
+	}
+
 }

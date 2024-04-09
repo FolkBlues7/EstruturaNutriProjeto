@@ -6,6 +6,7 @@ import com.nutricao.estruturaDeDadosNutri.entities.Meal;
 import com.nutricao.estruturaDeDadosNutri.entities.Diet;
 import com.nutricao.estruturaDeDadosNutri.entities.Food;
 import com.nutricao.estruturaDeDadosNutri.structures.CSVReader;
+import com.nutricao.estruturaDeDadosNutri.structures.SortingMethods.BubbleSort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +18,11 @@ import com.nutricao.estruturaDeDadosNutri.services.UserServices;
 import com.nutricao.estruturaDeDadosNutri.structures.DataStructures.DoublyLinkedList;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
@@ -102,14 +107,54 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
     	//userServices.update(recuperado);
 
         UserInterface ui = new UserInterface();
-        ui.showFoodOptions();
+        //String name = ui.createUser();
+        //ui.addFoodOptionsToDatabase();
+        String name = userServices.findById(1L).getName();
+        System.out.println("\nWelcome, " + name + "!");
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println();
+            System.out.println("Choose an option: ");
+            System.out.println("1. Create a new Meal for my Diet");
+            System.out.println("2. See my current Diet's Meals");
+            System.out.println("3. Exit");
+            System.out.print("--> ");
+            int option = Integer.parseInt(scanner.nextLine());
+            System.out.println();
+            if (option == 1) {
+                ui.createMeal();
+            } else if (option == 2) {
+                Diet diet = userServices.findById(1L).getDiet();
+                if (diet.getMeals().isEmpty()) {
+                    System.out.println("No meals in your diet yet.");
+                } else {
+                    System.out.println("Your current Diet is composed by the following Meals:\n");
+                    List<Meal> meals = diet.getMeals();
+                    BubbleSort<Meal> bs = new BubbleSort<>();
+                    meals = bs.sort(meals);
+                    int c = 1;
+                    for (Meal meal : meals) {
+                        System.out.println(c + ". " + "Meal at " + meal.getMealTime());
+                        System.out.print("Composed by: ");
+                        List<String> foodNames = meal.getFoods().stream()
+                                                     .map(Food::getName)
+                                                     .collect(Collectors.toList());
+                        System.out.println(String.join(", ", foodNames));
+                        c++;
+                    }
+                    
+                }
+            } else if (option == 3) {
+                break;
+            }
+        }
     }
 
     private class UserInterface {
 
-        private User user;
+        private static long userCounter = 1L;
 
-        public void createUser() {
+        public String createUser() {
             Scanner scanner = new Scanner(System.in);
 
             System.out.print("Digite o nome do usuário: ");
@@ -124,28 +169,66 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
             System.out.print("Digite a altura do usuário: ");
             float height = Float.parseFloat(scanner.nextLine());
 
-            System.out.print("Digite a porcentagem de gordura do usuário: ");
+            System.out.print("Digite a porcentagem de gordura corporal do usuário: ");
             float bodyWeight = Float.parseFloat(scanner.nextLine());
 
             Diet diet = new Diet();
             dietServices.insert(diet);
-            User u1 = new User(null, name, age, weight, height, bodyWeight);
+            User u1 = new User(userCounter, name, age, weight, height, bodyWeight);
             u1.setDiet(diet);
             userServices.insert(u1);
 
+            return name;
         }
 
         public void createMeal() {
             Scanner scanner = new Scanner(System.in);
-            System.out.print("Digite a data da refeição (dd/MM/yyyy HH:mm): ");
-            LocalDateTime date = LocalDateTime.parse(scanner.nextLine());
-            System.out.print("Digite se a refeição já foi realizada (true/false): ");
-            boolean done = Boolean.parseBoolean(scanner.nextLine());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            LocalDateTime date = null;
+
+            while (date == null) {
+                System.out.print("Set the date for your Meal (dd/MM/yyyy HH:mm): ");
+                String input = scanner.nextLine();
+                try {
+                    date = LocalDateTime.parse(input, formatter);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid format. Please try again.");
+                }
+            }
+
+            boolean done;
+            System.out.print("Is your Meal already done? (true/false): ");
+            String input = scanner.nextLine().toLowerCase();
+            if (input.equals("true")) {
+                done = true;
+            } else if (input.equals("false")) {
+                done = false;
+            } else {
+                done = false;
+                System.out.println("Invalid input. Meal will be considered not done.");
+            }
+
             Meal m1 = new Meal(null, done, date);
-            System.out.println("Chose the foods for the meal: ");
-            DoublyLinkedList<Food> foods = showFoodOptions();
-            //stoped here
-            mealServices.insert(m1);
+            m1 = mealServices.insert(m1); // Insert the meal and get the saved meal with its ID
+            dietServices.addMealToDiet(userCounter, m1.getId()); // Diet and User are hardcoded to same ID
+            while (true) {
+                System.out.println();
+                System.out.println("Choose the following Foods for the new meal: ");
+                List<Food> foods = foodServices.findAll();
+                showFoodOptions(foods);
+                System.out.println(foods.size() + 1 + ". Finish adding Foods to Meal");
+                System.out.print("--> ");
+                int option = Integer.parseInt(scanner.nextLine());
+                if (option > foods.size() || option < 1) {
+                    System.out.println("Exiting...");
+                    break;
+                } else {
+                    Food food = foods.get(option - 1);
+                    List<Long> foodsId = new DoublyLinkedList<>();
+                    foodsId.add(food.getId());
+                    mealServices.addFoodsToMeal(m1.getId(), foodsId);
+                }
+            }
         }
 
         public void writeFoodOptionsExamples() {
@@ -160,9 +243,15 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
             csvReader.writeFile(foods, "./foods.csv");
         }
 
-        public DoublyLinkedList<Food> showFoodOptions() {
+        public void addFoodOptionsToDatabase() {
             CSVReader csvReader = new CSVReader();
             DoublyLinkedList<Food> foods = csvReader.readFoods("./foods.csv");
+            for (Food food : foods) {
+                foodServices.insert(food);
+            }
+        }
+
+        public void showFoodOptions(List<Food> foods) {
             int c = 1;
             for (Food food : foods) {
                 System.out.print(c + ". " + food.getName());
@@ -175,7 +264,6 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
                 System.out.println();
                 c++;
             }
-            return foods;
         }
 
     }
