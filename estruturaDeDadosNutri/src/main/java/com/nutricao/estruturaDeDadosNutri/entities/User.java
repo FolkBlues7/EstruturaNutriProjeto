@@ -29,15 +29,15 @@ public class User implements Serializable {
 	@OneToOne
 	private Diet diet;
 	
-	public User(Long id, String name, int age, float weight, float height, float bodyWeight, float imc) {
+	public User(Long id, String name, int age, float weight, float height, float bodyWeight) {
 		super();
-		this.id = id;
-		this.name = name;
-		this.age = age;
-		this.weight = weight;
-		this.height = height;
-		this.bodyWeight = bodyWeight;
-		this.imc = imc;
+		setId(id);
+		setName(name);
+		setAge(age);
+		setWeight(weight);
+		setHeight(height);
+		setBodyWeight(bodyWeight);
+		setImc(weight, height);
 		this.diet = new Diet();
 	}
 	
@@ -80,8 +80,9 @@ public class User implements Serializable {
 	public float getImc() {
 		return imc;
 	}
-	public void setImc(float imc) {
-		this.imc = imc;
+	public void setImc(float weight, float height) {
+		height = height/100;
+		this.imc = weight/(height*height);
 	}
 	public Long getId() {
 		return id;

@@ -1,6 +1,11 @@
 package com.nutricao.estruturaDeDadosNutri;
 
 import com.nutricao.estruturaDeDadosNutri.entities.Food;
+import com.nutricao.estruturaDeDadosNutri.entities.User;
+import com.nutricao.estruturaDeDadosNutri.entities.Meal;
+import com.nutricao.estruturaDeDadosNutri.entities.Diet;
+import com.nutricao.estruturaDeDadosNutri.entities.Food;
+import com.nutricao.estruturaDeDadosNutri.structures.CSVReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,6 +15,9 @@ import com.nutricao.estruturaDeDadosNutri.services.FoodServices;
 import com.nutricao.estruturaDeDadosNutri.services.MealServices;
 import com.nutricao.estruturaDeDadosNutri.services.UserServices;
 import com.nutricao.estruturaDeDadosNutri.structures.DataStructures.DoublyLinkedList;
+
+import java.time.LocalDateTime;
+import java.util.Scanner;
 
 @SpringBootApplication
 public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
@@ -39,15 +47,14 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
     	//inserindo a nova food no banco de dados:
     	//foodServices.insert(f1);
     	//recuperando a food inserida pelo ID:
-    	//Food recuperada = foodServices.findById(7L);
+    	//Food recuperada = foodServices.findById(2L);
     	//recuperada.setCalories(182f);
     	//salvando a food após alterações:
     	//foodServices.update(recuperada);
     	//deletando food pelo ID:
-    	//foodServices.deleteById(7L);
+    	//foodServices.deleteById(3L);
     	//-------------------------------------------------------------------------
-    	
-    	
+
     	//MEAL:--------------------------------------------------------------------
     	//criando uma nova meal LocalDateTime.of(2024, 4, 5, 19, 0) é utilizando para definidir a data da refeição
     	//Meal m1 = new Meal(null, true, LocalDateTime.of(2024, 4, 5, 19, 0));
@@ -87,12 +94,90 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
     	//u1.setDiet(diet);
     	//salve a entidade User
     	//userServices.insert(u1);
-    	//deta um usuário
+    	//deleta um usuário
     	//userServices.delete(4L);
     	//alterações de usuário
     	//User recuperado = userServices.findById(5L);
     	//recuperado.setAge(100);
     	//userServices.update(recuperado);
-    	
+
+        UserInterface ui = new UserInterface();
+        ui.showFoodOptions();
     }
+
+    private class UserInterface {
+
+        private User user;
+
+        public void createUser() {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.print("Digite o nome do usuário: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Digite a idade do usuário: ");
+            int age = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Digite o peso do usuário: ");
+            float weight = Float.parseFloat(scanner.nextLine());
+
+            System.out.print("Digite a altura do usuário: ");
+            float height = Float.parseFloat(scanner.nextLine());
+
+            System.out.print("Digite a porcentagem de gordura do usuário: ");
+            float bodyWeight = Float.parseFloat(scanner.nextLine());
+
+            Diet diet = new Diet();
+            dietServices.insert(diet);
+            User u1 = new User(null, name, age, weight, height, bodyWeight);
+            u1.setDiet(diet);
+            userServices.insert(u1);
+
+        }
+
+        public void createMeal() {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Digite a data da refeição (dd/MM/yyyy HH:mm): ");
+            LocalDateTime date = LocalDateTime.parse(scanner.nextLine());
+            System.out.print("Digite se a refeição já foi realizada (true/false): ");
+            boolean done = Boolean.parseBoolean(scanner.nextLine());
+            Meal m1 = new Meal(null, done, date);
+            System.out.println("Chose the foods for the meal: ");
+            DoublyLinkedList<Food> foods = showFoodOptions();
+            //stoped here
+            mealServices.insert(m1);
+        }
+
+        public void writeFoodOptionsExamples() {
+            CSVReader csvReader = new CSVReader();
+            DoublyLinkedList<Food> foods = new DoublyLinkedList<>();
+            foods.add(new Food(null, "carne-de-sol", 159, 100, 0, 32, 2));
+            foods.add(new Food(null, "arroz", 130, 100, 28, 2, 0));
+            foods.add(new Food(null, "feijão", 100, 100, 20, 5, 1));
+            foods.add(new Food(null, "macarrão", 130, 100, 28, 2, 0));
+            foods.add(new Food(null, "batata", 77, 100, 17, 2, 0));
+            foods.add(new Food(null, "ovo", 70, 100, 1, 6, 5));
+            csvReader.writeFile(foods, "./foods.csv");
+        }
+
+        public DoublyLinkedList<Food> showFoodOptions() {
+            CSVReader csvReader = new CSVReader();
+            DoublyLinkedList<Food> foods = csvReader.readFoods("./foods.csv");
+            int c = 1;
+            for (Food food : foods) {
+                System.out.print(c + ". " + food.getName());
+                System.out.print(" - ");
+                System.out.print(food.getWeight() + "g de peso, ");
+                System.out.print(food.getCalories() + " calorias, ");
+                System.out.print(food.getCarbohydrates() + "g de carboidratos, ");
+                System.out.print(food.getProteins() + "g de proteinas, ");
+                System.out.print(food.getLipids() + "g de lipidios");
+                System.out.println();
+                c++;
+            }
+            return foods;
+        }
+
+    }
+
 }
