@@ -50,8 +50,10 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
         List<User> users = userServices.findAll();
         long userId = 1L;
         if (!users.isEmpty()) {
+            int c = 1;
             for (User user : users) {
-                System.out.println(user.getId() + ". " + user.getName());
+                System.out.println(c + ". " + user.getName());
+                c++;
             }
             System.out.print(users.size() + 1 + ". Create a new User\n");
             System.out.print("--> ");
@@ -84,6 +86,7 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
             System.out.println("5. Delete a food from database");
             System.out.println("6. Delete a meal from database");
             System.out.println("7. Update user information");
+            System.out.println("8. Count total calories in Diet");
             System.out.println("0. Exit");
             System.out.print("--> ");
             int option = Integer.parseInt(scanner.nextLine());
@@ -256,6 +259,16 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
                 }
                 userServices.update(user);
                 System.out.println("User information updated.");
+            } else if (option == 8) {
+                System.out.println("Counting total calories in Diet...");
+                Diet diet = userServices.findById(userId).getDiet();
+                if (diet.getMeals().isEmpty()) {
+                    System.out.println("No Meals in your Diet yet.");
+                } else {
+                    float totalCalories = ui.calculateTotalCaloriesInDiet(diet.getMeals(), 0);
+                    System.out.println("Total calories in your Diet: " + totalCalories);
+                }
+
             } else {
                 System.out.println("Exiting...");
                 break;
@@ -376,7 +389,8 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
         }
 
         public void deleteFood(Food food, Long id) {
-            foodServices.deleteById(food.getId());
+            Food foodFound = foodServices.findById(id);
+            foodServices.deleteById(foodFound.getId());
             CSVReader csvReader = new CSVReader();
             DoublyLinkedList<Food> foods = csvReader.readFoods("./foods.csv");
             Food[] foodsArray = foods.toArray(new Food[0]);
@@ -385,14 +399,19 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
             }
             BinarySearch<Food> bs = new BinarySearch<>();
             int index = bs.search(foods, food);
-            foods.clear();
-            for (int i = 0; i < foodsArray.length; i++) {
-                if (i != index) {
-                    foods.add(foodsArray[i]);
+            if (index == -1) {
+                System.out.println("Food not found.");
+                return;
+            } else {
+                foods.clear();
+                for (int i = 0; i < foodsArray.length; i++) {
+                    if (i != index) {
+                        foods.add(foodsArray[i]);
+                    }
                 }
+                csvReader.writeFile(foods, "./foods.csv");
+                System.out.println("Food deleted.");
             }
-            csvReader.writeFile(foods, "./foods.csv");
-            System.out.println("Food deleted.");
         }
 
         public void deleteMeal(Meal meal) {
@@ -412,6 +431,23 @@ public class EstruturaDeDadosNutriApplication implements CommandLineRunner {
                 System.out.print(food.getLipids() + "g de lipidios");
                 System.out.println();
                 c++;
+            }
+        }
+
+        public float calculateTotalCaloriesInMeal(List<Food> foods, int index) {
+            if (index == foods.size()) {
+                return 0;
+            } else {
+                return foods.get(index).getCalories() + calculateTotalCaloriesInMeal(foods, index + 1);
+            }
+        }
+
+        public float calculateTotalCaloriesInDiet(List<Meal> meals, int index) {
+            if (index == meals.size()) {
+                return 0;
+            } else {
+                float mealCalories = calculateTotalCaloriesInMeal(meals.get(index).getFoods(), 0);
+                return mealCalories + calculateTotalCaloriesInDiet(meals, index + 1);
             }
         }
 

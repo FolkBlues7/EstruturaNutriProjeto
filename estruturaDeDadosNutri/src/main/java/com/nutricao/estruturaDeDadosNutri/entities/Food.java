@@ -124,16 +124,9 @@ public class Food implements Serializable, Comparable<Food> {
 		&& Objects.equals(name, other.name);
 	}
 
-
 	@Override
 	public int compareTo(Food other) {
-		// Compare by name first
-		int nameComparison = this.name.compareTo(other.name);
-		if (nameComparison != 0) {
-			return nameComparison;
-		}
-
-		// If names are equal, compare by weight
-		return Float.compare(this.weight, other.weight);
+		return this.name.compareTo(other.name);
 	}
+
 }
