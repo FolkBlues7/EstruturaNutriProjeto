@@ -13,6 +13,9 @@ import com.nutricao.estruturaDeDadosNutri.repositories.FoodRepository;
 public class FoodServices {
 
 	@Autowired
+	private MealServices mealServices;
+
+	@Autowired
 	private FoodRepository repository;
 
 	public List<Food> findAll() {

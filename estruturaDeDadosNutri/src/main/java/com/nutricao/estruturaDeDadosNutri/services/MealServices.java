@@ -2,6 +2,7 @@ package com.nutricao.estruturaDeDadosNutri.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class MealServices {
+
 	@Autowired
 	private MealRepository repository;
 
@@ -62,7 +64,7 @@ public class MealServices {
 		// Salva a refeição atualizada
 		return repository.save(meal);
 	}
-	
+
 	public void deleteById(Long id) {
 		if (!repository.existsById(id)) {
 			throw new RuntimeException("Food not found");
@@ -77,4 +79,5 @@ public class MealServices {
 		// Salva e retorna o meal atualizado
 		return repository.save(meal);
 	}
+
 }

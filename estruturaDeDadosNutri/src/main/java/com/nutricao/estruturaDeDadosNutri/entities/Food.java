@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "food")
-public class Food implements Serializable {
+public class Food implements Serializable, Comparable<Food> {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -108,7 +108,7 @@ public class Food implements Serializable {
 	//hashcode e equals
 	@Override
 	public int hashCode() {
-		return Objects.hash(carbohydrates, id, name);
+		return Objects.hash(weight, name);
 	}
 
 	@Override
@@ -120,10 +120,20 @@ public class Food implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Food other = (Food) obj;
-		return Float.floatToIntBits(carbohydrates) == Float.floatToIntBits(other.carbohydrates)
-				&& Objects.equals(id, other.id) && Objects.equals(name, other.name);
+		return Float.floatToIntBits(weight) == Float.floatToIntBits(other.weight)
+		&& Objects.equals(name, other.name);
 	}
 
-	
-	
+
+	@Override
+	public int compareTo(Food other) {
+		// Compare by name first
+		int nameComparison = this.name.compareTo(other.name);
+		if (nameComparison != 0) {
+			return nameComparison;
+		}
+
+		// If names are equal, compare by weight
+		return Float.compare(this.weight, other.weight);
+	}
 }

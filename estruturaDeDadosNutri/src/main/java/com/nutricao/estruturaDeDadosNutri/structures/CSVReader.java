@@ -16,7 +16,7 @@ public class CSVReader {
             if (file.createNewFile()) {
                 System.out.println("File created: " + file.getName());
             } else {
-                System.out.println("File already exists. Overwriting it.");
+                //System.out.println("File already exists. Overwriting it.");
             }
         } catch (IOException e) {
             System.out.println("An error occurred while creating the file.");
@@ -27,11 +27,11 @@ public class CSVReader {
             for (Food food : data) {
                 String line = String.join(",",
                         food.getName(),
-                        String.valueOf(food.getProteins()),
-                        String.valueOf(food.getCarbohydrates()),
-                        String.valueOf(food.getLipids()),
                         String.valueOf(food.getCalories()),
-                        String.valueOf(food.getWeight())
+                        String.valueOf(food.getWeight()),
+                        String.valueOf(food.getCarbohydrates()),
+                        String.valueOf(food.getProteins()),
+                        String.valueOf(food.getLipids())
                 );
                 writer.println(line);
             }

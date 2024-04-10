@@ -49,7 +49,7 @@ public class LinkedQueue<E> implements QueueExtension<E> {
 
     @Override
     public boolean remove(Object o) {
-        if (isEmpty()) throw new ArrayIndexOutOfBoundsException();
+        if (isEmpty()) return false;
         if (o == null) throw new NullPointerException();
         Node current = beginning;
         Node previous = null;
@@ -222,6 +222,14 @@ public class LinkedQueue<E> implements QueueExtension<E> {
             }
 
         };
+    }
+
+    public void show() {
+        Node current = beginning;
+        while (current != null) {
+            System.out.println(current.data);
+            current = current.next;
+        }
     }
 
 }
